@@ -1,0 +1,54 @@
+:root {
+  /* fonts */
+  --font-sans: "metropolis", sans-serif;
+  --font-serif: "Lora", "georgia", serif;
+
+  /* colors */
+    /* blue */
+  --color-primary-700: #218bab;
+  --color-primary-500: #3badd0;
+  --color-primary-300: #d6eef5;
+
+    /* gray */
+  --color-secondary-600: #6e6e6e;
+  --color-secondary-400: #ececec;
+
+    /* white */
+  --color-white: #fff;
+
+    /* shadow */
+  --color-shadow: rgba(0, 0, 0, 0.2);
+  --color-shadow-2: rgba(0, 0, 0, 0.35);
+
+  /* metrics */
+  --margin-smallest: 0.5rem;
+  --margin-small: 1rem;
+  --margin-medium: 2rem;
+  --margin-large: 3rem;
+  --margin-largest: 4rem;
+
+  --padding-smallest: 0.5rem;
+  --padding-small: 1rem;
+  --padding-medium: 2rem;
+  --padding-large: 3rem;
+  --padding-largest: 4rem;
+
+  --font-size-smallest: 1rem;
+  --font-size-small: 1.2rem;
+  --font-size-medium: 1.5rem;
+  --font-size-large: 2rem;
+  --font-size-largest: 2.5rem;
+
+  --max-width-text: 850px;
+
+  --width-smallest: 30%;
+  --width-small: 40%;
+  --width-medium: 80%;
+  --width-big: 90%;
+  --width-biggest: 100%;
+
+  /* font weight */
+  --font-weight-light: 300;
+  --font-weight-regular: 500;
+  --font-weight-bold: 800;
+}

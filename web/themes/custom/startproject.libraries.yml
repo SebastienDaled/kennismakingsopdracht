@@ -1,0 +1,24 @@
+global-styling:
+  version: 1.x
+  js:
+    js/script.js: {}
+    js/no-result-search.js: {}
+    js/clickeble-card.js: {}
+  css:
+    base: 
+      ccss/base/fonts.css: {}
+      css/base/variables.css: {}
+    layout:
+      css/layout/footer.css: {}
+      css/layout/header.css: {}
+      css/layout/detail.css: {}
+      css/layout/home.css: {}
+    component:
+      css/components/search.css: {}
+      css/components/cards.css: {}
+      css/components/filter.css: {}
+      css/components/pager.css: {}
+      css/components/admin.css: {}
+      css/components/hamburger.css: {}
+    theme:
+      css/style.css: {}

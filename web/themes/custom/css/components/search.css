@@ -1,0 +1,25 @@
+#search-block-form{
+  display: flex;
+  width: var(--width-smallest);
+  margin: 0 0 0 auto;
+  gap: var(--margin-small);
+  align-items: center;
+  justify-content: right;
+}
+.search-block-form h2, #edit-submit-offices, #edit-submit-articles{
+ /* display: none; */
+}
+.form-search, .form-text{
+  padding: var(--padding-small) var(--padding-smallest);
+  /* border-radius: var(--padding-smallest); */
+  border: 1px solid var(--color-primary-500);
+  width: 350px;
+}
+.form-submit{
+  padding: var(--padding-small) var(--padding-medium);
+  border: none;
+  background-color: var(--color-primary-500);
+  color: var(--color-white);
+  /* border-radius: var(--padding-smallest); */
+}
+

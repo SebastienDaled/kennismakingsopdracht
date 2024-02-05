@@ -1,0 +1,44 @@
+footer {
+  display: flex;
+  width: 90%;
+  margin: 0 auto;
+  background-color: var(--color-primary-500);
+  color: var(--color-white);
+}
+footer > div{
+  width: var(--width-big);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--padding-medium) 0;
+}
+footer a {
+  text-decoration: underline;
+  color: var(--color-white);
+}
+footer a + a {
+  margin-top: var(--margin-small);
+}
+footer ul {
+  margin: var(--margin-small) auto;
+  justify-content: space-between;
+  font-size: 1.3rem;
+}
+.language-switcher-language-url ul{
+  list-style-type: none;
+}
+.language-switcher-language-url{
+  text-align: left;
+  width: auto;
+}
+.language-switcher-language-url li a {
+  text-decoration: none;
+  font-size: var(--font-size-smallest);
+}
+.language-switcher-language-url li + li{
+  margin-top: var(--margin-smallest);
+}
+.language-switcher-language-url li::after{
+  content: " \203A";
+}

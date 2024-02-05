@@ -1,0 +1,25 @@
+.views-exposed-form, #views-exposed-form-search-page-1{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: right;
+  gap: var(--margin-small);
+  margin: var(--margin-small) 0;
+}
+.views-exposed-form select {
+  padding: var(--padding-small);
+  /* border-radius: var(--padding-smallest); */
+  margin: 0 0 0 auto;
+  background-color: var(--color-primary-300);
+  border: 1px solid var(--color-primary-500);
+  color: var(--color-secondary-600);
+}
+.views-exposed-form div{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--margin-small);
+}
+.views-exposed-form label{
+  font-size: var(--font-size-medium);
+}

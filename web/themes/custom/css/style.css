@@ -1,0 +1,36 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: var(--font-sans);
+}
+img{
+  width: var(--width-biggest);
+  height: auto;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+main {
+  width: var(--width-medium);
+  margin: var(--margin-large) auto;
+}
+.views-row + .views-row {
+  margin-top: var(--margin-medium);
+}
+.views-row {
+  display: flex;
+  gap: var(--margin-small);
+}
+h2 {
+  margin-bottom: var(--margin-small);
+}
+span {
+  font-size: var(--font-size-large);
+  font-weight: var(--font-weight-bold);
+}
+p{
+  max-width: var(--max-width-text);
+}
+

@@ -1,0 +1,7 @@
+name: countrys
+type: module
+description: 'Migrate country data to taxonomy terms.'
+package: Custom
+core_version_requirement: '>=9.1'
+dependencies:
+  - migrate_plus:migrate_plus

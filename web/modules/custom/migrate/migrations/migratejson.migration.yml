@@ -1,0 +1,30 @@
+id: migration
+label: 'Country migration'
+migration_group: custom
+source:
+  plugin: url
+  data_fetcher_plugin: http
+  data_parser_plugin: json
+  urls: 
+    - http://country.io/names.json
+  item_selector: migration
+  fields:
+    -
+      name: country_code
+      label: 'Country Code'
+      selector: country_code
+    -
+      name: country_name
+      label: 'Country Name'
+      selector: country_name
+  ids:
+    country_code:
+      type: string
+process:
+  name: title
+  vid:
+    plugin: default_value
+    default_value: country
+destination:
+  plugin: 'entity:taxonomy_term'
+  default_bundle: country

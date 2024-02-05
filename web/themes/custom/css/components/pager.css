@@ -1,0 +1,37 @@
+.js-pager__items{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 0;
+  color: var(--color-primary-500);
+  margin-top: var(--margin-medium); 
+}
+.js-pager__items a{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--color-primary-500);
+  width: 0;
+  height: 0;
+  padding: var(--padding-medium) var(--padding-medium);
+  transition: .5s ease-out;
+}
+.js-pager__items a:hover{
+  background-color: var(--color-primary-300);
+}
+.page-number{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0;
+  height: 0;
+  padding: var(--padding-medium) var(--padding-medium);
+  background-color: var(--color-primary-500);
+  color: var(--color-secondary-400);
+  font-size: var(--font-size-medium);
+}
+.pager__items .is-active a{
+  background-color: var(--color-primary-700);
+  color: var(--color-white);
+}

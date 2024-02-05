@@ -1,0 +1,13 @@
+id: countrys
+label: Custom Country Migration
+source:
+  plugin: url
+  data_fetcher_plugin: fil
+  data_parser_plugin: json
+  urls:
+    - modules/custom/countrys/files/countrys.json
+process:
+  name: country_name
+destination:
+  plugin: 'entity:taxonomy_term'
+  default_bundle: 'Country'
