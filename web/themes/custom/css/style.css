@@ -34,3 +34,25 @@ p{
   max-width: var(--max-width-text);
 }
 
+@media screen and (max-width: 700px) {
+  main {
+    width: var(--width-big);
+    margin: var(--margin-medium) auto;
+  }
+  .views-row {
+    flex-direction: column;
+    gap: var(--margin-small);
+  }
+  img{
+    width: 100%;
+  }
+  h2 {
+    font-size: var(--font-size-large);
+  }
+  span {
+    font-size: var(--font-size-medium);
+  }
+  p{
+    max-width: var(--max-width-text-small);
+  }
+}

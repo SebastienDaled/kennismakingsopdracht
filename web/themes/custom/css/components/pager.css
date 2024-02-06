@@ -5,6 +5,7 @@
   gap: 0;
   color: var(--color-primary-500);
   margin-top: var(--margin-medium); 
+  list-style-type: none;
 }
 .js-pager__items a{
   display: flex;

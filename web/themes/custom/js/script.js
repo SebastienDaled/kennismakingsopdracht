@@ -10,7 +10,6 @@ if (filter) {
 }
 
 window.addEventListener('scroll', () => {
-  console.log('scrolling');
   if (window.scrollY > 50) {
     navbar.classList.add('shrink');
   } else {
@@ -35,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   window.addEventListener('resize', function () {
-    if (window.innerWidth > 768) {
+    if (window.innerWidth > 700) {
       nav.style.display = 'flex';
       nav.style.alignItems = 'space-between';
       nav.style.listStyle = 'none';
