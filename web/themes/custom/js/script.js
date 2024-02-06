@@ -10,43 +10,17 @@ if (filter) {
 }
 
 window.addEventListener('scroll', () => {
-
+  console.log('scrolling');
   if (window.scrollY > 50) {
     navbar.classList.add('shrink');
   } else {
     navbar.classList.remove('shrink');
   }
 });
-
-// if (window.innerWidth <= 1000) {
-//   mainNav.classList.add('hide');
-//   hamburger.classList.remove('hide');
-// }
-
-
-// window.addEventListener('resize', () => {
-//   console.log("zz");
-//   if (window.innerWidth <= 1000) {
-//     if (!mainNav.classList.contains('hide')) {
-//       mainNav.classList.add('hide');
-//       hamburger.classList.remove('hide');
-//     } 
-//   } else {
-//     mainNav.classList.remove('hide');
-//     hamburger.classList.add('hide');
-//   }
-// });
-
-
-// hamburger.addEventListener('click', () => {
-//   mainNav.classList.toggle('hide');
-//   mainNav.classList.toggle('menu');
-// }
-// );
 document.addEventListener('DOMContentLoaded', function () {
   // Get the navigation element
   var nav = document.querySelector('nav ul');
-
+  
   // Get the hamburger icon element
   var hamburgerIcon = document.getElementById('hamburger-icon');
 
@@ -71,3 +45,4 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
