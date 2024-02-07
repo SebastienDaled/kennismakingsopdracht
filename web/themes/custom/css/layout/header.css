@@ -25,6 +25,10 @@ header img{
 header a {
   text-decoration: none;
   color: var(--color-white);
+  transition: .5s;
+}
+header a:hover header li{
+  transform: scale(1.05);
 }
 .shrink{
   transition: all 0.3s ease-out;
