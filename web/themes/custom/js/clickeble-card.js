@@ -5,13 +5,20 @@ if (articles) {
     article.addEventListener('click', () => {
       const url = window.location.href;
       const urlWithoutQuery = url.split('?')[0];
-  
+      
+
       const title = article.querySelector(`span a`).textContent;
+
+      // console.log('title', title);
+      // get the " out of the title"
+      const titleShort = title.replace(/"/g, '');
       const datasetID = article.querySelector(`article`).dataset;
       const id = datasetID.historyNodeId;
-  
-      const slug = title.replace(/\s+/g, '-').toLowerCase();
-      
+
+      console.log(titleShort);
+      // "The Sweetest Bite: When an iPhone Gets a Taste of Cake" remove the " and the "The" and "a" and "an" and "of" and "this" and "the" every space and replace it with a -
+      const slug = titleShort.replace(/The\s|an\s|of\s|this\s|the\s|from\s|on\s/g, '').replace(/\sa\s/g, ' ').replace(/\sa$/g, "").replace(/:/g, '').replace(/\s/g, '-').toLowerCase().replace(/--/g, '');
+      console.log(slug, title);
       if (urlWithoutQuery.includes('office')) {
         window.location.href = `/node/${id}`;
       }

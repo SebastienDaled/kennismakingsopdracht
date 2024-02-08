@@ -1,0 +1,9 @@
+# modules/custom/ai_search/ai_search.routing.yml
+
+ai_search.content:
+  path: '/search-ai'
+  defaults:
+    _controller: '\Drupal\content_generation\Controller\AiSearchController::content'
+    _title: 'content-generation'
+  requirements:
+    _permission: 'access content'

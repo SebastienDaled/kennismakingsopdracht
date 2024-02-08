@@ -1,0 +1,35 @@
+.content-generation-form{
+  color: var(--color-primary-700);
+}
+.content-generation-form input[type="submit"]{
+  margin: var(--margin-medium) 0;
+}
+.content-generation-form label {
+  display: block;
+  margin: var(--margin-small) 0 0.5rem 0;
+  font-weight: 800;
+}
+.content-generation-form .form-item-title {
+  margin: var(--margin-medium) 0;
+  font-size: var(--font-size-largest);
+  font-weight: 800;
+}
+.content-generation-form .form-item-subtitle {
+  margin: var(--margin-large) 0 var(--margin-small) 0;
+  font-size: var(--font-size-medium);
+  font-weight: 800;
+}
+.content-generation-form select{
+  padding: var(--padding-small);
+  margin: 0 0 0 auto;
+  background-color: var(--color-primary-300);
+  border: 1px solid var(--color-primary-500);
+  color: var(--color-secondary-600);
+}
+.content-generation-form textarea{
+  padding: var(--padding-small);
+  margin: 0 0 0 auto;
+  background-color: var(--color-primary-300);
+  border: 1px solid var(--color-primary-500);
+  color: var(--color-secondary-600);
+}

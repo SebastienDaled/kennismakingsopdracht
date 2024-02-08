@@ -1,0 +1,12 @@
+name: Search API AI Explorer
+type: module
+description: Provides a way to explore Search API AI.
+package: Search
+core_version_requirement: ^9 || ^10
+dependencies:
+  - search_api_ai:search_api_ai
+
+# Information added by Drupal.org packaging script on 2023-07-21
+version: '1.0.0-alpha2'
+project: 'search_api_ai'
+datestamp: 1689940928

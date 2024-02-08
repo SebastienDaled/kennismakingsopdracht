@@ -1,0 +1,9 @@
+# modules/custom/content_generation/content_generation.routing.yml
+
+content_generation.content:
+  path: '/content-generation'
+  defaults:
+    _controller: '\Drupal\content_generation\Controller\ContentGenerationController::content'
+    _title: 'content-generation'
+  requirements:
+    _permission: 'access content'
