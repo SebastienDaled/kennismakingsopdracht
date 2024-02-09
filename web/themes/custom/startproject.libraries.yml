@@ -21,5 +21,6 @@ global-styling:
       css/components/admin.css: {}
       css/components/hamburger.css: {}
       css/components/form.css: {}
+      css/components/facets.css: {}
     theme:
       css/style.css: {}

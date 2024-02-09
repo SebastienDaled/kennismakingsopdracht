@@ -1,0 +1,4 @@
+name: "AI Chatbot"
+type: module
+description: "Chatbot for Drupal"
+core_version_requirement: ^8 || ^9 || ^10

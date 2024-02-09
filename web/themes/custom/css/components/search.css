@@ -6,9 +6,6 @@
   align-items: center;
   justify-content: right;
 }
-.search-block-form h2, #edit-submit-offices, #edit-submit-articles{
- /* display: none; */
-}
 .form-search, .form-text{
   padding: var(--padding-small) var(--padding-smallest);
   /* border-radius: var(--padding-smallest); */
@@ -22,4 +19,7 @@
   color: var(--color-white);
   /* border-radius: var(--padding-smallest); */
 }
-
+.contextual-region header{
+  margin-bottom: 1rem;
+  color: var(--color-secondary-600);
+}
