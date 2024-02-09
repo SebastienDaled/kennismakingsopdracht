@@ -17,7 +17,7 @@ if (articles) {
 
       console.log(titleShort);
       // "The Sweetest Bite: When an iPhone Gets a Taste of Cake" remove the " and the "The" and "a" and "an" and "of" and "this" and "the" every space and replace it with a -
-      const slug = titleShort.replace(/The\s|an\s|of\s|this\s|the\s|from\s|on\s/g, '').replace(/\sa\s/g, ' ').replace(/\sa$/g, "").replace(/:/g, '').replace(/\s/g, '-').toLowerCase().replace(/--/g, '');
+      const slug = titleShort.replace(/The\s|an\s|of\s|this\s|the\s|from\s|on\s|for\s|in\s|that\s/g, '').replace(/\sa\s/g, ' ').replace(/\sa$/g, "").replace(/:/g, '').replace(/\s/g, '-').toLowerCase().replace(/--/g, '').replace(/!/g, "").replace(/-$/g, "");
       console.log(slug, title);
       if (urlWithoutQuery.includes('office')) {
         window.location.href = `/node/${id}`;

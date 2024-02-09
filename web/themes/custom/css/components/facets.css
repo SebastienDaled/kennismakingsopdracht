@@ -15,9 +15,20 @@
   display: flex;
   align-items: center;
 }
+.facets-widget-checkbox ul li + li{
+  border-left: 2px solid var(--color-primary-400);
+  padding: 1rem 0;
+}
 .facets-widget-checkbox ul li label span{
   padding: 1rem 1.5rem;
   background-color: var(--color-primary-300);
+  transition: .5s;
+  cursor: pointer;
+}
+
+.facets-widget-checkbox ul li label span:hover{
+  background-color: var(--color-primary-500);
+  color: var(--color-white);
 }
 .facets-widget-checkbox ul li input[type="checkbox"]{
   margin-right: 0.5rem;

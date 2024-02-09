@@ -97,7 +97,8 @@ class ContentGenerationForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state)
   {
     // the api key
-    $api_key = "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";
+    $api_key = Settings::get('api_key');
+    // dd($api_key);
 
     // retreiving the values from the form
     $content_type = $form_state->getValue('content_type');
@@ -111,15 +112,11 @@ class ContentGenerationForm extends FormBase {
     $prompt_image = "make an image for a " . $content_type . " about " . $prompt;
 
     // --- office
-    $prompt_telephone = "make a telephonenumber for " . $country;
-    $prompt_fax = "make a fax for " . $country;
-    $prompt_email = "make an email for " . $country;
-    $prompt_address = "make an address for " . $country;
-    $prompt_contact = "make a contact name for " . $country;
     $prompt_all_info = "make a telephone, fax, email, address and contact name for " . $country . "and return it in an object in json format";
 
     // creating the content
     if ($content_type == 'article') {
+
       // get the title and text from openai
       $image_url = get_openai_image($prompt_image, $api_key);
       $title = get_openai_post($prompt_title, 20, $api_key);
@@ -148,8 +145,12 @@ class ContentGenerationForm extends FormBase {
           'value' => $text,
           "format" => "restricted_html",
         ],
-        'field_tags' => $form_state->getValue('taxonomy'),
-        'field_offices' => $form_state->getValue('offices'),
+        'field_tags' => [
+          'target_id' => $form_state->getValue('taxonomy')[0]['target_id'],
+        ],
+        'field_offices' => [
+          'target_id' => $form_state->getValue('offices'),
+        ],
         'field_media_image' => [
           'target_id' => $media->id(),
         ],
@@ -166,7 +167,6 @@ class ContentGenerationForm extends FormBase {
       $all_info = json_decode($all_info);
 
       $image_prompt = "make an image for an office in " . $country_name;
-
       $image_url = get_openai_image($image_prompt, $api_key);
 
       // create the media entity
@@ -202,6 +202,7 @@ class ContentGenerationForm extends FormBase {
       ]);
 
       $node->save();
+
     } else if ($content_type == 'news'){
       // get the title and text from openai
       $image_url = get_openai_image($prompt_image, $api_key);
