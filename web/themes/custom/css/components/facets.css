@@ -1,14 +1,14 @@
 .block-facet--checkbox {
-  margin-bottom: 3rem;
+  /* margin-bottom: 3rem; */
 }
 .block-facet--checkbox h2{
   font-size: var(--font-size-large);
   color: var(--color-primary-500);
   margin-bottom: 2rem;
+  text-align: right;
 }
 .facets-widget-checkbox ul{
   display: flex;
-
   margin-bottom: 1rem;
 }
 .facets-widget-checkbox ul li{
@@ -17,6 +17,7 @@
 }
 .facets-widget-checkbox ul li label span{
   padding: 1rem 1.5rem;
+  background-color: var(--color-primary-300);
 }
 .facets-widget-checkbox ul li input[type="checkbox"]{
   margin-right: 0.5rem;
@@ -24,11 +25,17 @@
 }
 /* active checbox */
 .facets-widget-checkbox ul li input[type="checkbox"]:checked + label span{
-  /* color: var(--color-secondary-400); */
-  background-color: var(--color-primary-300);
+  color: var(--color-white);
+  background-color: var(--color-primary-500);
 }
 .facets-widget-checkbox ul li label span{
   margin: 0;
   font-size: var(--font-size-medium);
   color: var(--color-primary-500);
+}
+.content-above>div{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2rem;
 }

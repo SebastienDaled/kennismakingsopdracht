@@ -35,7 +35,6 @@ class AiChatbotForm extends FormBase {
     $form['prompt'] = [
       '#type' => 'textarea',
       '#placeholder' => 'Write a prompt for the AI to generate content.',
-      '#title' => $this->t('Prompt'),
       '#required' => TRUE,
     ];
     // submit
@@ -44,13 +43,13 @@ class AiChatbotForm extends FormBase {
       '#value' => $this->t('Chat'),
     ];
 
-    $form['result'] = [
-      '#type' => 'item',
-      '#title' => $this->t('Result'),
-      '#attributes' => [
-        'class' => ['form-result']
-      ]
-    ];
+    // $form['result'] = [
+    //   '#type' => 'item',
+    //   '#title' => $this->t('Result'),
+    //   '#attributes' => [
+    //     'class' => ['form-result']
+    //   ]
+    // ];
     return $form;
   }
 

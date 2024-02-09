@@ -23,7 +23,6 @@ class ContentGenerationForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    // a title
     $form['title'] = [
       '#type' => 'item',
       '#title' => $this->t('Generate content with AI'),
@@ -37,6 +36,7 @@ class ContentGenerationForm extends FormBase {
       '#options' => [
         'article' => $this->t('Article'),
         'news' => $this->t('News'),
+        'offices' => $this->t('Office'),
       ],
       '#required' => TRUE,
     ];
@@ -44,12 +44,10 @@ class ContentGenerationForm extends FormBase {
       '#type' => 'textarea',
       '#placeholder' => 'Write a prompt for the AI to generate content.',
       '#title' => $this->t('Prompt'),
-      '#required' => TRUE,
     ];
-    // offices
     $form['subtitle'] = [
       '#type' => 'item',
-      '#title' => $this->t('optional: only for articles'),
+      '#title' => $this->t('Add an Office and a Tag'),
       '#attributes' => [
         'class' => ['form-title']
       ]
@@ -71,7 +69,15 @@ class ContentGenerationForm extends FormBase {
       ],
       '#tags' => TRUE,
     ];
-
+    $form['country'] = [
+      '#type' => 'entity_autocomplete',
+      '#title' => $this->t('Country'),
+      '#target_type' => 'taxonomy_term',
+      '#selection_settings' => [
+        'target_bundles' => ['country'],
+      ],
+      '#tags' => TRUE,
+    ];
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Submit'),
@@ -85,45 +91,62 @@ class ContentGenerationForm extends FormBase {
 
   /**
    * {@inheritdoc}
+   * 
    */
 
   public function submitForm(array &$form, FormStateInterface $form_state)
   {
-    // api key
+    // the api key
     $api_key = "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";
 
+    // retreiving the values from the form
     $content_type = $form_state->getValue('content_type');
     $prompt = $form_state->getValue('prompt');
+    $country = $form_state->getValue('country');
 
+    // making the prompts for the ai
+    // --- article, news
     $prompt_title = "make a title for a " . $content_type . " about " . $prompt;
     $prompt_text = "write a text for a " . $content_type . " about " . $prompt;
     $prompt_image = "make an image for a " . $content_type . " about " . $prompt;
 
-    $image_url = get_openai_image($prompt_image, $api_key);
-    $title = get_openai_post($prompt_title, 20, $api_key);
-    $text = get_openai_post($prompt_text, 150, $api_key);
+    // --- office
+    $prompt_telephone = "make a telephonenumber for " . $country;
+    $prompt_fax = "make a fax for " . $country;
+    $prompt_email = "make an email for " . $country;
+    $prompt_address = "make an address for " . $country;
+    $prompt_contact = "make a contact name for " . $country;
+    $prompt_all_info = "make a telephone, fax, email, address and contact name for " . $country . "and return it in an object in json format";
 
-    $data = file_get_contents($image_url);
-    $file = \Drupal::service('file.repository')->writeData($data, 'public://image.png', FileSystemInterface::EXISTS_RENAME);
-
-    $media = Media::create([
-      'bundle' => 'image',
-      'name' => 'Image for ' . $title,
-      'field_media_image' => [
-        'target_id' => $file->id(),
-        'alt' => 'Image for ' . $title,
-      ],
-    ]);
-
-    $media->save();
-
-
+    // creating the content
     if ($content_type == 'article') {
+      // get the title and text from openai
+      $image_url = get_openai_image($prompt_image, $api_key);
+      $title = get_openai_post($prompt_title, 20, $api_key);
+      $text = get_openai_post($prompt_text, 150, $api_key);
+
+      // create the media entity
+      $data = file_get_contents($image_url);
+      $file = \Drupal::service('file.repository')->writeData($data, 'public://image.png', FileSystemInterface::EXISTS_RENAME);
+
+      $media = Media::create([
+        'bundle' => 'image',
+        'name' => 'Image for ' . $title,
+        'field_media_image' => [
+          'target_id' => $file->id(),
+          'alt' => 'Image for ' . $title,
+        ],
+      ]);
+
+      $media->save();
+
+      // create the node
       $node = Node::create([
         'type' => $content_type,
         'title' => $title,
         'body' => [
           'value' => $text,
+          "format" => "restricted_html",
         ],
         'field_tags' => $form_state->getValue('taxonomy'),
         'field_offices' => $form_state->getValue('offices'),
@@ -133,12 +156,80 @@ class ContentGenerationForm extends FormBase {
       ]);
 
       $node->save();
-    } else {
+
+    } else if ($content_type == 'offices') {
+      $country_name = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($country[0]['target_id']);
+      $country_name = $country_name->name->value;
+
+      // get the telephone, fax, email, address and contact from openai
+      $all_info = get_openai_post($prompt_all_info, 70, $api_key);
+      $all_info = json_decode($all_info);
+
+      $image_prompt = "make an image for an office in " . $country_name;
+
+      $image_url = get_openai_image($image_prompt, $api_key);
+
+      // create the media entity
+      $data = file_get_contents($image_url);
+      $file = \Drupal::service('file.repository')->writeData($data, 'public://image.png', FileSystemInterface::EXISTS_RENAME);
+
+      $media = Media::create([
+        'bundle' => 'image',
+        'name' => 'Image for ' . $country_name,
+        'field_media_image' => [
+          'target_id' => $file->id(),
+          'alt' => 'Image for ' . $country_name,
+        ],
+      ]);
+
+      $media->save();
+      
+      // create the node
+      $node = Node::create([
+        'type' => $content_type,
+        'title' => "Office " . $country_name,
+        'field_telephone_number' => $all_info->telephone,
+        'field_fax' => $all_info->fax,
+        'field_email' => $all_info->email,
+        'field_adres' => $all_info->address,
+        'field_contact_person' => $all_info->contact_name,
+        'field_country' => [
+          'target_id' => $country[0]['target_id'],
+        ],
+        'field_media_image' => [
+          'target_id' => $media->id(),
+        ],
+      ]);
+
+      $node->save();
+    } else if ($content_type == 'news'){
+      // get the title and text from openai
+      $image_url = get_openai_image($prompt_image, $api_key);
+      $title = get_openai_post($prompt_title, 20, $api_key);
+      $text = get_openai_post($prompt_text, 150, $api_key);
+
+      // create the media entity
+      $data = file_get_contents($image_url);
+      $file = \Drupal::service('file.repository')->writeData($data, 'public://image.png', FileSystemInterface::EXISTS_RENAME);
+
+      $media = Media::create([
+        'bundle' => 'image',
+        'name' => 'Image for ' . $title,
+        'field_media_image' => [
+          'target_id' => $file->id(),
+          'alt' => 'Image for ' . $title,
+        ],
+      ]);
+
+      $media->save();
+
+      // create the node
       $node = Node::create([
         'type' => $content_type,
         'title' => $title,
         'body' => [
           'value' => $text,
+          "format" => "restricted_html",
         ],
         'field_media_image' => [
           'target_id' => $media->id(),
@@ -146,13 +237,10 @@ class ContentGenerationForm extends FormBase {
       ]);
       
       $node->save();
+
     }
 
-    
-
     print $node->toUrl('canonical', ['absolute' => TRUE])->toString() . "\n";
-
-
   }
   
 }

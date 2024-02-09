@@ -22,4 +22,6 @@
 .contextual-region header{
   margin-bottom: 1rem;
   color: var(--color-secondary-600);
+  z-index: 0;
+  text-align: right;
 }

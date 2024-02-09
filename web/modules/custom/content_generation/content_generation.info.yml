@@ -1,4 +1,4 @@
-name: 'content generation'
+name: 'AI Content Generation'
 type: module
 description: 'Generates content for the site with AI.'
 core_version_requirement: ^8 || ^9 || ^10
