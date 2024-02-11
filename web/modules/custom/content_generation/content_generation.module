@@ -1,0 +1,10 @@
+function content_generation() {
+  return [
+    'content_generation' => [
+      'render element' => 'children',
+      'variables' => [
+        'content' => '',
+      ]
+    ]
+  ]
+}

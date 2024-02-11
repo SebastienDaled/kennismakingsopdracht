@@ -7,3 +7,15 @@ content_generation.content:
     _title: 'content-generation'
   requirements:
     _permission: 'access content'
+
+draft.content:
+  path: '/content-generation/draft'
+  defaults:
+    _controller: '\Drupal\content_generation\Controller\ContentGenerationController::contentDraft'
+    _title: 'content-generation-draft'
+  requirements:
+    _permission: 'access content' # Provide a valid permission string here
+  options:
+    parameters:
+      param1:
+        type: 'string'

@@ -12,6 +12,7 @@ use Drupal\Core\File\FileSystemInterface;
 
 class ContentGenerationForm extends FormBase {
 
+  
   /**
    * {@inheritdoc}
    */
@@ -96,6 +97,7 @@ class ContentGenerationForm extends FormBase {
 
   public function submitForm(array &$form, FormStateInterface $form_state)
   {
+    session_start();
     // the api key
     $api_key = Settings::get('api_key');
     // dd($api_key);
@@ -126,6 +128,7 @@ class ContentGenerationForm extends FormBase {
       $data = file_get_contents($image_url);
       $file = \Drupal::service('file.repository')->writeData($data, 'public://image.png', FileSystemInterface::EXISTS_RENAME);
 
+      // save the image in media
       $media = Media::create([
         'bundle' => 'image',
         'name' => 'Image for ' . $title,
@@ -137,26 +140,14 @@ class ContentGenerationForm extends FormBase {
 
       $media->save();
 
-      // create the node
-      $node = Node::create([
-        'type' => $content_type,
+      // creating the object to send to /draft
+      $json = json_encode([
         'title' => $title,
-        'body' => [
-          'value' => $text,
-          "format" => "restricted_html",
-        ],
-        'field_tags' => [
-          'target_id' => $form_state->getValue('taxonomy')[0]['target_id'],
-        ],
-        'field_offices' => [
-          'target_id' => $form_state->getValue('offices'),
-        ],
-        'field_media_image' => [
-          'target_id' => $media->id(),
-        ],
+        'text' => $text,
+        'image' => $media->id(),
+        'tags' => $form_state->getValue('taxonomy')[0]['target_id'],
+        'offices' => $form_state->getValue('offices'),
       ]);
-
-      $node->save();
 
     } else if ($content_type == 'offices') {
       $country_name = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($country[0]['target_id']);
@@ -165,6 +156,8 @@ class ContentGenerationForm extends FormBase {
       // get the telephone, fax, email, address and contact from openai
       $all_info = get_openai_post($prompt_all_info, 70, $api_key);
       $all_info = json_decode($all_info);
+      $all_info->country_name = $country_name;
+      $all_info->country = $country[0]['target_id'];
 
       $image_prompt = "make an image for an office in " . $country_name;
       $image_url = get_openai_image($image_prompt, $api_key);
@@ -183,25 +176,29 @@ class ContentGenerationForm extends FormBase {
       ]);
 
       $media->save();
-      
-      // create the node
-      $node = Node::create([
-        'type' => $content_type,
-        'title' => "Office " . $country_name,
-        'field_telephone_number' => $all_info->telephone,
-        'field_fax' => $all_info->fax,
-        'field_email' => $all_info->email,
-        'field_adres' => $all_info->address,
-        'field_contact_person' => $all_info->contact_name,
-        'field_country' => [
-          'target_id' => $country[0]['target_id'],
-        ],
-        'field_media_image' => [
-          'target_id' => $media->id(),
-        ],
-      ]);
 
-      $node->save();
+      $all_info->image = $media->id();
+      // create the node
+      // $node = Node::create([
+      //   'type' => $content_type,
+      //   'title' => "Office " . $country_name,
+      //   'field_telephone_number' => $all_info->telephone,
+      //   'field_fax' => $all_info->fax,
+      //   'field_email' => $all_info->email,
+      //   'field_adres' => $all_info->address,
+      //   'field_contact_person' => $all_info->contact_name,
+      //   'field_country' => [
+      //     'target_id' => $country[0]['target_id'],
+      //   ],
+      //   'field_media_image' => [
+      //     'target_id' => $media->id(),
+      //   ],
+      // ]);
+
+      // $node->save();
+
+        // make a json object with the information
+        $json = json_encode($all_info);
 
     } else if ($content_type == 'news'){
       // get the title and text from openai
@@ -224,24 +221,16 @@ class ContentGenerationForm extends FormBase {
 
       $media->save();
 
-      // create the node
-      $node = Node::create([
-        'type' => $content_type,
+      $json = json_encode([
         'title' => $title,
-        'body' => [
-          'value' => $text,
-          "format" => "restricted_html",
-        ],
-        'field_media_image' => [
-          'target_id' => $media->id(),
-        ],
+        'text' => $text,
+        'image' => $media->id(),
       ]);
-      
-      $node->save();
-
     }
 
-    print $node->toUrl('canonical', ['absolute' => TRUE])->toString() . "\n";
+    // redirect to the /draft page
+    $form_state->setRedirect('draft.content', ['prompt' => $json, 'content_type' => $content_type]);
+
   }
   
 }
