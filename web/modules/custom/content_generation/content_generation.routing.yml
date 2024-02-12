@@ -14,7 +14,7 @@ draft.content:
     _controller: '\Drupal\content_generation\Controller\ContentGenerationController::contentDraft'
     _title: 'content-generation-draft'
   requirements:
-    _permission: 'access content' # Provide a valid permission string here
+    _permission: 'access content'
   options:
     parameters:
       param1:
