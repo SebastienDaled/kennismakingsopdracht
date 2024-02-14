@@ -41,8 +41,33 @@ class AiChatbotForm extends FormBase {
     // submit
     $form['submit'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Chat'),
+      '#value' => $this->t('Ask'),
     ];
+
+    // get the query from the url
+    $query = \Drupal::request()->query->get('response');
+    $question = \Drupal::request()->query->get('question');
+
+    // if there is a query, show it in the form
+    if ($query) {
+      $form['response'] = [
+        '#type' => 'item',
+        '#title' => $this->t('Result: '),
+        '#markup' => "<p>" . $question . '<p/><p class="ai_result">' . $query . '</p>',
+        '#attributes' => [
+          'class' => ['form-result']
+        ]
+      ];
+    } else {
+      $form['response'] = [
+        '#type' => 'item',
+        '#title' => $this->t('Result: '),
+        '#markup' => '<p class="ai_result">ask a question first.</p>',
+        '#attributes' => [
+          'class' => ['form-result']
+        ]
+      ];
+    }
 
     // $form['result'] = [
     //   '#type' => 'item',
@@ -93,10 +118,14 @@ class AiChatbotForm extends FormBase {
 
     $prompt_user = $form_state->getValue('prompt');
     
-    $prompt_ai = "there is a json object with data, you need to you to answer the question that is being asked by using the json object. the json object has 'news1', 'news2,... and 'article1', 'article2',... each one has a text that contains a info about the article or news. the question being asked has to be anwered with the data in the json format. json data: " . $json_all_data . ". question: " . $prompt_user . ".";
+    $prompt_ai = "there is a json object with data, you need to you to answer the question that is being asked. the jsonobject has 'news1', 'news2,... & 'article1', 'article2',... each one has text that contains info about article or news. the question being asked to be anwered with the data in the json format. json data: " . $json_all_data . ". question: " . $prompt_user . ".";
     
     $response = get_ai_response($prompt_ai, $api_key);
     
+    // set response in the query in the url bar
+    $response = urlencode($response);
+    $response = new RedirectResponse('/search?response=' . $response . "&question=". $prompt_user);
+    $response->send();
     dd($response);
   }
 }

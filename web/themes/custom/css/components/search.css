@@ -8,7 +8,6 @@
 }
 .form-search, .form-text{
   padding: var(--padding-small) var(--padding-smallest);
-  /* border-radius: var(--padding-smallest); */
   border: 1px solid var(--color-primary-500);
   width: 350px;
 }
@@ -17,11 +16,33 @@
   border: none;
   background-color: var(--color-primary-500);
   color: var(--color-white);
-  /* border-radius: var(--padding-smallest); */
 }
 .contextual-region header{
   margin-bottom: 1rem;
   color: var(--color-secondary-600);
   z-index: 0;
   text-align: right;
+}
+.form-item-response{
+  margin-top: 1rem;
+}
+.form-item-response label{
+  color: var(--color-secondary-600);
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-bold);
+}
+.ai_result{
+  margin-top: 1rem;
+  padding: .5rem .5rem 2rem .5rem;
+  background-color: var(--color-primary-300);
+  border: 1px solid var(--color-primary-400);
+  color: var(--color-secondary-600);
+}
+.ai-chatbot-form textarea{
+  padding: var(--padding-small);
+  margin: 0 0 0 auto;
+  background-color: var(--color-primary-300);
+  border: 1px solid var(--color-primary-500);
+  color: var(--color-secondary-600);
+  margin-bottom: 1rem;
 }
