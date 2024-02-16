@@ -9,6 +9,7 @@ use GuzzleHttp\Client;
 use Drupal\media\Entity\Media; 
 use Drupal\node\Entity\Node;
 use Drupal\Core\File\FileSystemInterface;
+use Exception;
 
 class ContentGenerationForm extends FormBase {
 
@@ -109,12 +110,14 @@ class ContentGenerationForm extends FormBase {
 
     // making the prompts for the ai
     // --- article, news
-    $prompt_title = "make a title for a " . $content_type . " about " . $prompt;
-    $prompt_text = "write a text for a " . $content_type . " about " . $prompt;
-    $prompt_image = "make an image for a " . $content_type . " about " . $prompt;
+    $prompt_title = $this->t("make a title for a " . $content_type . " about " . $prompt);
+    $prompt_text = $this->t("write a text for a " . $content_type . " about " . $prompt);
+    $prompt_image = $this->t("make an image for a " . $content_type . " about " . $prompt);
 
     // --- office
-    $prompt_all_info = "make a telephone, fax, email, address and contact name for " . $country . "and return it in an object in json format";
+    // $prompt_all_info = "make a telephone, fax, email, address and contact name for " . $country . "and return it in an object in json format";
+    // t();
+    $prompt_all_info = $this->t("make a telephone, fax, email, address and contact name for @country and return it in an object in json format", ['@country' => $country]);
 
     // creating the content
     if ($content_type == 'article') {
@@ -178,27 +181,10 @@ class ContentGenerationForm extends FormBase {
       $media->save();
 
       $all_info->image = $media->id();
-      // create the node
-      // $node = Node::create([
-      //   'type' => $content_type,
-      //   'title' => "Office " . $country_name,
-      //   'field_telephone_number' => $all_info->telephone,
-      //   'field_fax' => $all_info->fax,
-      //   'field_email' => $all_info->email,
-      //   'field_adres' => $all_info->address,
-      //   'field_contact_person' => $all_info->contact_name,
-      //   'field_country' => [
-      //     'target_id' => $country[0]['target_id'],
-      //   ],
-      //   'field_media_image' => [
-      //     'target_id' => $media->id(),
-      //   ],
-      // ]);
 
-      // $node->save();
 
-        // make a json object with the information
-        $json = json_encode($all_info);
+      // make a json object with the information
+      $json = json_encode($all_info);
 
     } else if ($content_type == 'news'){
       // get the title and text from openai
@@ -244,26 +230,39 @@ class ContentGenerationForm extends FormBase {
  * @return string
  */
 function get_openai_post($prompt, $max_tokens, $api_key) {
-  $url = 'https://api.openai.com/v1/completions';
-  $temperature = 0.7;
-  $model = 'gpt-3.5-turbo-instruct';
+  try {
+    $url = Settings::get('openai_model_completion');
+    $temperature = Settings::get('openai_temprature');
+    $model = Settings::get('openai_model');
 
-  $client = new Client();
-  $response = $client->request('POST', $url, [
-      'headers' => [
-          'Authorization' => 'Bearer ' . $api_key,
-          'Content-Type' => 'application/json',
-      ],
-      'json' => [
-          'prompt' => $prompt,
-          'temperature' => $temperature,
-          'max_tokens' => $max_tokens,
-          'model' =>  $model,
-      ],
-  ]);
+    $client = new Client();
+    $response = $client->request('POST', $url, [
+        'headers' => [
+            'Authorization' => 'Bearer ' . $api_key,
+            'Content-Type' => 'application/json',
+        ],
+        'json' => [
+            'prompt' => $prompt,
+            'temperature' => $temperature,
+            'max_tokens' => $max_tokens,
+            'model' =>  $model,
+        ],
+    ]);
 
-  return json_decode($response->getBody()->getContents())->choices[0]->text;
+    // Check if the response was successful (status code 2xx)
+    if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
+        return json_decode($response->getBody()->getContents())->choices[0]->text;
+    } else {
+        // Handle non-successful response here
+        throw new Exception('OpenAI API request failed with status code: ' . $response->getStatusCode());
+    }
+  } catch (Exception $e) {
+    // Handle exceptions here
+    // You can log the error, show a user-friendly message, or take any other appropriate action.
+    return 'Error: ' . $e->getMessage();
+  }
 }
+
 
 
 /**
@@ -274,20 +273,32 @@ function get_openai_post($prompt, $max_tokens, $api_key) {
  * @return string
  */
 function get_openai_image($prompt, $api_key) {
-  $url = 'https://api.openai.com/v1/images/generations';
+  try {
+    $url = Settings::get('openai_image_generation');
 
-  $client = new Client();
-  $response = $client->request('POST', $url, [
-      'headers' => [
-          'Authorization' => 'Bearer ' . $api_key,
-          'Content-Type' => 'application/json',
-      ],
-      'json' => [
-          'prompt' => $prompt,
-          'n' => 1,
-          'size' => '512x512',
-      ],
-  ]);
+    $client = new Client();
+    $response = $client->request('POST', $url, [
+        'headers' => [
+            'Authorization' => 'Bearer ' . $api_key,
+            'Content-Type' => 'application/json',
+        ],
+        'json' => [
+            'prompt' => $prompt,
+            'n' => 1,
+            'size' => '512x512',
+        ],
+    ]);
 
-  return json_decode($response->getBody()->getContents())->data[0]->url;
+    // Check if the response was successful (status code 2xx)
+    if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
+        return json_decode($response->getBody()->getContents())->data[0]->url;
+    } else {
+        // Handle non-successful response here
+        throw new Exception('OpenAI image generation request failed with status code: ' . $response->getStatusCode());
+    }
+  } catch (Exception $e) {
+    // Handle exceptions here
+    // You can log the error, show a user-friendly message, or take any other appropriate action.
+    return 'Error: ' . $e->getMessage();
+  }
 }

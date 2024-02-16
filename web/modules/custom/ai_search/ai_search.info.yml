@@ -1,7 +1,0 @@
-name: 'Ai Search'
-type: module
-description: 'searches for throug all content with a prompt and AI.'
-core_version_requirement: ^8 || ^9 || ^10
-dependencies:
- - drupal:block
- - drupal:config

@@ -33,16 +33,15 @@ class ContentDraftForm extends FormBase {
     $content_type = $params['content_type'];
     // retrieve the media
     $media = Media::load($info->image);
-
+    $form['title'] = [
+      '#type' => 'item',
+      '#title' => $this->t('draft form for ' . $content_type ),
+      '#attributes' => [
+        'class' => ['form-title']
+      ]
+      ];
     // build the form each depending on the content type
     if ($content_type === "offices") {
-      $form['title'] = [
-        '#type' => 'item',
-        '#title' => $this->t('draft form for ' . $content_type ),
-        '#attributes' => [
-          'class' => ['form-title']
-        ]
-      ];
       $form['image'] = [
         '#type' => 'hidden',
         '#value' => $media->id(),
@@ -95,13 +94,6 @@ class ContentDraftForm extends FormBase {
       ];
     } else if ($content_type === "article") {
       $form['title'] = [
-        '#type' => 'item',
-        '#title' => $this->t('draft form for ' . $content_type ),
-        '#attributes' => [
-          'class' => ['form-title']
-        ]
-      ];
-      $form['title'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Title'),
         '#required' => TRUE,
@@ -134,13 +126,6 @@ class ContentDraftForm extends FormBase {
         '#value' => $this->t('Submit'),
       ];
     } else if ($content_type === "news") {
-      $form['title'] = [
-        '#type' => 'item',
-        '#title' => $this->t('draft form for ' . $content_type ),
-        '#attributes' => [
-          'class' => ['form-title']
-        ]
-      ];
       $form['title'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Title'),
